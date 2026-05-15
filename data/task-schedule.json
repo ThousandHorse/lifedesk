@@ -1,0 +1,58 @@
+[
+  {
+    "id": "t1",
+    "title": "企画書作成",
+    "type": "task",
+    "dueAt": "",
+    "done": false,
+    "note": "Q2 振り返り用"
+  },
+  {
+    "id": "t2",
+    "title": "請求書確認",
+    "type": "task",
+    "dueAt": "",
+    "done": false,
+    "note": "5月分"
+  },
+  {
+    "id": "t3",
+    "title": "週次 MTG",
+    "type": "event",
+    "dueAt": "2026-05-18T10:00:00",
+    "done": false,
+    "note": "Zoom"
+  },
+  {
+    "id": "t4",
+    "title": "歯医者",
+    "type": "event",
+    "dueAt": "2026-05-20T14:00:00",
+    "done": false,
+    "note": "定期検診"
+  },
+  {
+    "id": "t5",
+    "title": "デザインレビュー",
+    "type": "task",
+    "dueAt": "",
+    "done": true,
+    "note": ""
+  },
+  {
+    "id": "t6",
+    "title": "コードレビュー",
+    "type": "task",
+    "dueAt": "",
+    "done": true,
+    "note": "PR #42"
+  },
+  {
+    "id": "t7",
+    "title": "1on1",
+    "type": "event",
+    "dueAt": "2026-05-22T15:00:00",
+    "done": false,
+    "note": ""
+  }
+]
