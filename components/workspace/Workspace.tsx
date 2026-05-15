@@ -7,7 +7,7 @@ export function Workspace() {
   return (
     <SidebarProvider
       defaultOpen
-      className="h-screen w-full overflow-hidden bg-background text-foreground"
+      className="h-svh w-full overflow-hidden bg-background text-foreground"
     >
       <SidebarInset className="flex min-w-0 flex-col bg-background">
         <GlobalHeader
