@@ -1,0 +1,74 @@
+[
+  {
+    "id": "m1",
+    "date": "2026-05-25",
+    "title": "給与",
+    "amount": 280000,
+    "type": "income",
+    "category": "給与",
+    "note": "5月分"
+  },
+  {
+    "id": "m2",
+    "date": "2026-05-01",
+    "title": "家賃",
+    "amount": 85000,
+    "type": "expense",
+    "category": "家賃",
+    "note": ""
+  },
+  {
+    "id": "m3",
+    "date": "2026-05-02",
+    "title": "食費（週1）",
+    "amount": 12000,
+    "type": "expense",
+    "category": "食費",
+    "note": ""
+  },
+  {
+    "id": "m4",
+    "date": "2026-05-09",
+    "title": "食費（週2）",
+    "amount": 11500,
+    "type": "expense",
+    "category": "食費",
+    "note": ""
+  },
+  {
+    "id": "m5",
+    "date": "2026-05-10",
+    "title": "電気代",
+    "amount": 6800,
+    "type": "expense",
+    "category": "光熱費",
+    "note": ""
+  },
+  {
+    "id": "m6",
+    "date": "2026-05-10",
+    "title": "スマホ代",
+    "amount": 3200,
+    "type": "expense",
+    "category": "通信費",
+    "note": ""
+  },
+  {
+    "id": "m7",
+    "date": "2026-05-12",
+    "title": "映画・サブスク",
+    "amount": 4500,
+    "type": "expense",
+    "category": "娯楽",
+    "note": "Netflix / Prime"
+  },
+  {
+    "id": "m8",
+    "date": "2026-05-15",
+    "title": "フリーランス報酬",
+    "amount": 50000,
+    "type": "income",
+    "category": "副収入",
+    "note": "4月分"
+  }
+]

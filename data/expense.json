@@ -1,0 +1,65 @@
+[
+  {
+    "id": "e1",
+    "date": "2026-05-15",
+    "title": "新橋→品川 交通費",
+    "amount": 210,
+    "category": "交通費",
+    "status": "未申請",
+    "note": ""
+  },
+  {
+    "id": "e2",
+    "date": "2026-05-14",
+    "title": "チームランチ",
+    "amount": 1800,
+    "category": "飲食費",
+    "status": "未申請",
+    "note": "5名分"
+  },
+  {
+    "id": "e3",
+    "date": "2026-05-12",
+    "title": "USBハブ",
+    "amount": 3200,
+    "category": "消耗品",
+    "status": "申請済",
+    "note": ""
+  },
+  {
+    "id": "e4",
+    "date": "2026-05-10",
+    "title": "新幹線（東京→大阪）",
+    "amount": 14060,
+    "category": "交通費",
+    "status": "承認済",
+    "note": "出張"
+  },
+  {
+    "id": "e5",
+    "date": "2026-05-10",
+    "title": "大阪出張 宿泊",
+    "amount": 12000,
+    "category": "宿泊費",
+    "status": "承認済",
+    "note": "ホテルコスモ大阪"
+  },
+  {
+    "id": "e6",
+    "date": "2026-05-08",
+    "title": "コーヒー（打合せ）",
+    "amount": 800,
+    "category": "飲食費",
+    "status": "申請済",
+    "note": ""
+  },
+  {
+    "id": "e7",
+    "date": "2026-05-01",
+    "title": "クラウドストレージ",
+    "amount": 1500,
+    "category": "通信費",
+    "status": "承認済",
+    "note": "月額"
+  }
+]
