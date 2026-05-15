@@ -1,135 +1,74 @@
-# lifedesk — AIへの引き継ぎ指示書
+# workspace-ui-kit
 
-## このプロジェクトとは
+採用管理ドメインの **4ペイン Next.js 16 × shadcn/ui ワークスペース雛形**。
+受講生向けの動かし方・業種変更手順は README を参照。
 
-個人用ワークスペース「lifedesk」の実装プロジェクト。
-勤怠管理・経費申請・タスク&スケジュール・お金の4ツールを1画面で管理する。
+## 視覚 SSoT
 
-詳細な設計は以下を参照:
-- `plan.md` — 実装プラン・フェーズ一覧・DB設計
-- `design.md` — 4ペイン構成のアスキーアート
+画面の SSoT（Single Source of Truth = 情報の正本）は `components/workspace/Workspace.tsx`。
+**ADR と実装で矛盾したら ADR-003 が正、実装は段階的に追従する**。
+（ADR-0015 仕様への追従は別タスクで進める。詳細は ADR-003 §13 R1 参照）
 
----
+- [ADR 一覧](openspec/decision/) — ペイン責務・デザインシステム・shadcn idiom 等の決定記録
 
-## 現在の状態
+## 同梱スキル
 
-- `plan.md` `design.md` 作成済み
-- GitHub リポジトリ作成済み: https://github.com/ThousandHorse/lifedesk
-- **次にやること: フェーズ1（セットアップ）**
+| スキル                      | いつ発動するか                                        | パス                                                            |
+| --------------------------- | ----------------------------------------------------- | --------------------------------------------------------------- |
+| designing-workspace-ui      | ペイン変更・色変更・コンポーネント追加など UI 作業    | [SKILL.md](.claude/skills/designing-workspace-ui/SKILL.md)      |
+| shadcn                      | shadcn 部品の追加・カスタマイズ                       | [SKILL.md](.claude/skills/shadcn/SKILL.md)                      |
+| next-best-practices         | Next.js 16 のファイル規約・RSC 境界・async パターン等 | [SKILL.md](.claude/skills/next-best-practices/SKILL.md)         |
+| vercel-react-best-practices | React 性能最適化（70 ルール / 8 カテゴリ）            | [SKILL.md](.claude/skills/vercel-react-best-practices/SKILL.md) |
 
----
+MUST: Next.js のコードを書く前に `node_modules/next/dist/docs/` の該当ドキュメントを読む。学習データではなくバンドル版が正。
 
-## 確定済みの設計決定
+## 編集の方針
 
-### ツール構成（4ツール）と解決課題
+IMPORTANT: 以下を守ること。
 
-| ツール | 課題 | 解決 |
-|--------|------|------|
-| 勤怠管理 | 手動入力が面倒 | ワンタップで出退勤を完結 |
-| 経費申請 | レシートが積み上がる | その場でサッと入力 |
-| タスク&スケジュール | タスクが流れる | 期限つきで忘れない仕組み |
-| お金 | 月末になぜなくなるかわからない | カテゴリ別収支で可視化 |
+- **UI 変更を始める前に `/designing-workspace-ui` スキルを起動する**。トークン・部品・レイアウトで足りないときは決定木 3a〜3d でユーザー確認し、独断で SSoT を広げない
+- **フィールド編集は `components/primitives/Inline*`（shadcn 標準フォーム、border-input + bg-card）を再利用**。鉛筆 / 「編集」ボタン / 編集専用モーダルに逃がさない。業務 Dialog（追加・削除・プレビュー等）は既存パターン踏襲で可
+- **shadcn 部品の更新は `npx shadcn@latest add ... --diff` で確認**。`--overwrite` は本人の明示許可なしに使わない（独自 variant が消えるため）
 
-### 4ペイン設計
+## コード生成ルール
 
-| Pane | コンポーネント名 | 役割 |
-|------|----------------|------|
-| Pane1 | ToolNavPane | ツール切り替えナビ（4ツールのセレクター） |
-| Pane2 | RecordListPane | レコード一覧 ＋ ヘッダーに「＋新規」ボタン |
-| Pane3 | InputPane | デフォルト=入力フォーム、リスト項目クリックで詳細表示に切り替わる |
-| Pane4 | OutputPane | サマリーカード ＋ recharts グラフ |
+`components/` 配下のファイルを編集する際は、以下を必ず守る。詳しい根拠と Incorrect/Correct ペアは [coding-rules.md](.claude/skills/designing-workspace-ui/references/coding-rules.md) に集約している:
 
-### Pane3 のモード
+- 子要素の間隔は親で管理する（`flex flex-col gap-*` を使う、`space-y-*` は使わない）
+- 部品の見た目を呼び出し側で打ち消さない（色・フォントサイズ・フォントウェイトの `className` 上書きはしない。部品側に variant を追加する）
+- 色は役割で名前付けされたトークンを使う（`bg-primary` 等。`bg-blue-500` のような色番号は使わない）
+- 正方形の要素には `size-N` を使う（`w-N h-N` ではなく）
+- このプロジェクトは shadcn の **base**（Base UI）を使用。カスタムトリガーには `asChild` ではなく `render` を使う
+- shadcn の部品（Button / Card / Badge / Dialog 等）が使えるなら、自前の div で代替しない
+- UI の変更前に `/designing-workspace-ui` スキルを必ず読む
+- 派生 state を Effect で複製しない（レンダーで計算する）。props 変更追従の Effect+setState は避け、リセットは key でリマウント。ユーザー操作起因の副作用は state フラグ+Effect より直接イベントハンドラに置く
 
-```
-Pane2「＋新規」クリック  →  Pane3 = 入力フォーム（空）
-Pane2 項目クリック       →  Pane3 = 詳細・編集ビュー
-```
+## 技術スタック
 
-### ツール別の特記事項
+- Next.js 16 / React 19 / TypeScript（strict）
+- Tailwind CSS v4（`@theme` で CSS 変数）
+- shadcn/ui（base-nova / `@base-ui/react`）
+- lucide-react（アイコン）
+- `zod`（ランタイム検証）
 
-- **勤怠管理 Pane3**: 出勤・退勤ボタン（現在時刻自動記録）+ 編集で手修正可
-- **タスク&スケジュール Pane2**: タブフィルター（すべて / タスク / イベント）+ Badge で識別
-- **タスク&スケジュール Pane3**: 期限日時なし = タスク、あり = イベントとして保存
-- **スケジュール Pane2**: カレンダーウィジェットなし、リスト表示で統一
+## コマンド
 
-### 技術スタック
-
-- **ベース**: `/Users/chibatakuma/Documents/Project/Sample/workspace-ui-kit` を道A（踏襲ルート）でコピーして改造
-- **追加ライブラリ（モック時）**: `recharts`
-- **追加ライブラリ（本実装時）**: `@supabase/supabase-js` `@supabase/ssr`
-- **認証**: Supabase Auth（メール＋パスワード）、個人利用・RLS で保護
-
-### Workspace.tsx の状態設計
-
-```typescript
-type ToolKey = 'attendance' | 'expense' | 'task-schedule' | 'money'
-type Pane3Mode = 'new' | 'detail'
-
-selectedTool: ToolKey
-selectedRecordId: string | null
-pane3Mode: Pane3Mode
-mockData: Record<ToolKey, Record[]>  // モックフェーズのみ
+```bash
+npm run dev          # 開発サーバー起動
+npm run build        # 本番ビルド
+npm run lint         # ESLint
+npm run test         # Vitest スモークテスト
+npm run format       # Prettier
+npm run check:radius # 角丸ドリフト検出
 ```
 
----
+## 配布制約
 
-## フェーズ一覧と進捗
+- `.distignore` で `openspec/` `AGENTS.md` は配布対象外（受講生の Gitea リポジトリに含まれない）
+- `CLAUDE.md` と `.claude/skills/*` は配布される（受講生環境の AI が読む）
+- 配布手順は親リポジトリの `managing-ads-gitea` スキルに従う
 
-- [ ] フェーズ1: セットアップ（workspace-ui-kit コピー・recharts インストール）
-- [ ] フェーズ2: スキーマ + モックデータ + Workspace.tsx 状態設計
-- [ ] フェーズ3: Pane1 — ToolNavPane
-- [ ] フェーズ4: Pane2 — RecordListPane（全4ツール）
-- [ ] フェーズ5: Pane3 — InputPane（全4ツール）
-- [ ] フェーズ6: Pane4 — OutputPane（サマリーカード + recharts）
-- [ ] フェーズ7: Supabase セットアップ・Auth・ログインページ
-- [ ] フェーズ8: タスク&スケジュール 本実装（Supabase 接続）
-- [ ] フェーズ9: 勤怠管理 本実装
-- [ ] フェーズ10: 経費申請 本実装
-- [ ] フェーズ11: お金 本実装
+## やらないこと
 
----
-
-## 進め方のルール
-
-1. **フェーズを1つずつ実装する**。前のフェーズの完了確認が取れてから次へ進む
-2. **完了確認の基準は `plan.md` の各フェーズに記載**
-3. **道Aのルール（workspace-ui-kit の設計思想）を尊重する**
-   - 4ペイン構造を維持する
-   - `app/globals.css` の CSS 変数（色・角丸）を使う
-   - shadcn/ui コンポーネントを使う
-
----
-
-## 次のチャットで最初にやること（フェーズ1）
-
-```
-workspace-ui-kit を lifedesk にコピーしてセットアップしてください。
-plan.md のフェーズ1の手順に従って進めてください。
-```
-
-### フェーズ1 の手順
-
-1. `/Users/chibatakuma/Documents/Project/Sample/workspace-ui-kit` の内容を `/Users/chibatakuma/Documents/Project/lifedesk` にコピー（`.git` は除く）
-2. 採用管理サンプル固有ファイルを削除
-   - `data/candidates.json`
-   - `data/positions.json`
-   - `data/workspace.json`
-3. `recharts` をインストール: `npm install recharts`
-4. `npm run dev` でサーバーが起動することを確認
-
----
-
-## ファイル構成（現在）
-
-```
-lifedesk/
-├── .claude/
-│   └── skills/
-│       └── grill-me/
-│           └── SKILL.md    ← 要件深掘り用スキル
-├── .gitignore
-├── CLAUDE.md               ← この引き継ぎ指示書
-├── design.md               ← ペイン構成アスキーアート
-└── plan.md                 ← 実装プラン全体
-```
+- DB 接続・認証（次フェーズ）
+- `react-beautiful-dnd`（廃止ライブラリ）への置き換え

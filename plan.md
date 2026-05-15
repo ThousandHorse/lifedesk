@@ -23,7 +23,7 @@
 
 ## 全体方針
 
-- **プロジェクト場所**: `/Users/chibatakuma/Documents/Project/Sample/lifedesk`
+- **プロジェクト場所**: `/Users/chibatakuma/Documents/Project/lifedesk`
 - **ベース**: workspace-ui-kit を道A（踏襲ルート）でコピーして改造
 - **進め方**: フェーズごとに実装・確認してから次へ進む
 - **モックフェーズ**: 全4ツールをハードコードデータで実装
@@ -102,8 +102,20 @@ Pane2 のリスト項目をクリック  →  Pane3 = 詳細・編集ビュー
 ## フェーズ別実装順
 
 ### フェーズ1: セットアップ
-- [ ] workspace-ui-kit を `lifedesk` にコピー
-- [ ] 採用管理サンプル固有ファイルを削除（`data/candidates.json` 等）
+- [ ] workspace-ui-kit を `lifedesk` にコピー（`.git` `.next` を除く）
+- [ ] 採用管理サンプル固有ファイルを削除
+  - `data/candidates.json` / `data/positions.json` / `data/workspace.json`
+  - `lib/computed/profile.ts` / `lib/computed/scorecards.ts`
+  - `lib/data/factories.ts` / `lib/labels.ts`
+  - `__tests__/` ディレクトリ全体
+  - `components/workspace/CandidateListPane.tsx`
+  - `components/workspace/CandidateDashboardPane.tsx`
+  - `components/workspace/CandidateDetailPane.tsx`
+  - `components/workspace/PositionPane.tsx`
+  - `components/workspace/SortableCandidateRow.tsx`
+  - `components/workspace/AddItemDialog.tsx`
+  - `components/workspace/AttachmentList.tsx`
+  - `components/workspace/AttachmentPreviewDialog.tsx`
 - [ ] `recharts` をインストール
 - **完了確認**: `npm run dev` でサーバーが起動すること
 
